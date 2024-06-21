@@ -6,24 +6,33 @@ class GildedRose(object):
         self.items = items
 # function to update quality of items 
     def update_quality(self):
-        for item in self.items:
-            if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert":
-                if item.quality > 0 and item.name != "Sulfuras, Hand of Ragnaros":
-                    item.quality = item.quality - 1
+       for item in self.items:
+        if item.name == "Sulfuras, Hand of Ragnaros":
+            continue  #Ensuring Sulfuras quality value never changes
+        elif "Aged Brie" in item.name:
+            item.quality += 1
+        elif "Backstage passes" in item.name:
+            if item.sell_in <= 0:
+                item.quality = 0
+            elif item.sell_in <= 5:
+                item.quality += 3
+            elif item.sell_in <= 10:
+                item.quality += 2
             else:
-                if item.quality < 50:
-                    item.quality = item.quality + 1
-                    if (item.name == "Backstage passes to a TAFKAL80ETC concert" and  item.sell_in < 11 and item.quality < 50 and item.sell_in < 6 and item.quality < 50):
-                        item.quality = item.quality + 1
-    
-            if item.name != "Sulfuras, Hand of Ragnaros":
-                item.sell_in = item.sell_in - 1
-            if (item.sell_in < 0 and item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert" and item.quality > 0 and item.name != "Sulfuras, Hand of Ragnaros"):
-                item.quality = item.quality - 1
-            else:
-                item.quality = item.quality - item.quality
-            if item.quality < 50:
-                item.quality = item.quality + 1
+                item.quality += 1
+        elif "Conjured" in item.name:
+            item.quality -= 2
+        else:
+            item.quality -= 1
+
+        # Ensure quality limits are respected
+        if item.quality > 50:
+            item.quality = 50
+        elif item.quality < 0:
+            item.quality = 0
+
+        # Decrease rate sell_in for all items (except Sulfuras)
+        item.sell_in -= 1
 
 
 class Item:
