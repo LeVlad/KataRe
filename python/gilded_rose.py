@@ -21,7 +21,7 @@ class GildedRose(object):
             else:
                 item.quality += 1
         elif "Conjured" in item.name:
-            item.quality -= 2
+            item.quality /= 2
         else:
             item.quality -= 1
 
