@@ -21,9 +21,10 @@ class GildedRose(object):
             else:
                 item.quality += 1
         elif "Conjured" in item.name:
-            item.quality /= 2
-        else:
-            item.quality -= 1
+            if item.sell_in > 0:
+                item.quality -= 2
+            else:
+                item.quality -= 4
 
         # Ensure quality limits are respected
         if item.quality > 50:
